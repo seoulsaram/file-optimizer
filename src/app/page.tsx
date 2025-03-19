@@ -9,24 +9,29 @@ export default function Home() {
   const [optimizedImages, setOptimizedImages] = useState<string[]>([]);
   const [format, setFormat] = useState('webp');
   const [quality, setQuality] = useState(80);
+  const [loading, setLoading] = useState(false);
 
   const handleOptimize = async () => {
     const formData = new FormData();
     files.forEach((file) => formData.append('images', file));
     formData.append('format', format);
     formData.append('quality', quality.toString());
-
+    setLoading(true);
     const res = await fetch('/api/optimize', {
       method: 'POST',
       body: formData,
     });
 
     const data = await res.json();
+    setLoading(false);
     setOptimizedImages(data.optimized);
     setFiles([]); // 원본 삭제
   };
 
+  const [downloading, setDownloading] = useState(false);
+
   const downloadAll = async () => {
+    setDownloading(true);
     try {
       const res = await fetch('/api/optimize/zip', {
         method: 'POST',
@@ -39,7 +44,7 @@ export default function Home() {
       if (!res.ok) {
         throw new Error('다운로드 실패');
       }
-
+      setDownloading(false);
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -67,7 +72,7 @@ export default function Home() {
           <ImageUpload files={files} setFiles={setFiles} />
           <button
             onClick={handleOptimize}
-            disabled={files.length === 0}
+            disabled={files.length === 0 || loading}
             className='bg-blue-500 text-white px-4 py-2 rounded mt-4 disabled:bg-gray-300'
           >
             최적화
@@ -78,6 +83,7 @@ export default function Home() {
           {optimizedImages.length > 0 && (
             <button
               onClick={downloadAll}
+              disabled={downloading}
               className='bg-green-500 text-white px-4 py-2 rounded mt-4'
             >
               모두 다운로드
