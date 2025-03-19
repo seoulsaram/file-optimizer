@@ -63,32 +63,36 @@ export default function Home() {
       <main className='flex flex-col gap-[32px] row-start-2 items-center sm:items-start'>
         <div className='max-w-4xl mx-auto p-8'>
           <h1 className='text-2xl font-bold mb-4'>이미지 최적화 프로그램</h1>
-          <OptionPanel
-            format={format}
-            setFormat={setFormat}
-            quality={quality}
-            setQuality={setQuality}
-          />
-          <ImageUpload files={files} setFiles={setFiles} />
-          <button
-            onClick={handleOptimize}
-            disabled={files.length === 0 || loading}
-            className='bg-blue-500 text-white px-4 py-2 rounded mt-4 disabled:bg-gray-300'
-          >
-            최적화
-          </button>
-
-          <ImagePreview images={optimizedImages} />
-
-          {optimizedImages.length > 0 && (
+          <div className='border-[1px] border-black/20 p-4 bg-gray-100'>
+            <OptionPanel
+              format={format}
+              setFormat={setFormat}
+              quality={quality}
+              setQuality={setQuality}
+            />
+            <ImageUpload files={files} setFiles={setFiles} />
             <button
-              onClick={downloadAll}
-              disabled={downloading}
-              className='bg-green-500 text-white px-4 py-2 rounded mt-4'
+              onClick={handleOptimize}
+              disabled={files.length === 0 || loading}
+              className='bg-blue-500 text-white px-4 py-2 rounded mt-4 disabled:bg-gray-300'
             >
-              모두 다운로드
+              최적화
             </button>
-          )}
+          </div>
+
+          <div className='mt-4 border-[1px] border-yellow-300 p-4 bg-yellow-100'>
+            <ImagePreview images={optimizedImages} />
+
+            {optimizedImages.length > 0 && (
+              <button
+                onClick={downloadAll}
+                disabled={downloading}
+                className='bg-green-500 text-white px-4 py-2 rounded mt-4'
+              >
+                모두 다운로드
+              </button>
+            )}
+          </div>
         </div>
       </main>
     </div>

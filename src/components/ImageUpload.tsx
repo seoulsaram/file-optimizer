@@ -32,7 +32,7 @@ export default function ImageUpload({
         onChange={handleChange}
         className='mb-4'
       />
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid grid-cols-5 gap-4'>
         {files.map((file: File, idx: number) => (
           <div key={idx} className='relative'>
             <Image
