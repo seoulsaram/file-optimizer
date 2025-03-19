@@ -32,13 +32,13 @@ export async function POST(req: NextRequest) {
 
     let command = `ffmpeg -y -i "${inputPath}"`;
     if (format === 'webp') {
-      command += ` -qscale ${Math.floor(quality / 10)} "${outputPath}"`;
+      command += ` -compression_level 6 -q:v ${quality} -preset picture -loop 0 "${outputPath}"`;
     } else if (format === 'png') {
       command += ` -compression_level ${Math.floor(
         (quality / 100) * 9
       )} "${outputPath}"`;
     } else {
-      command += ` -qscale:v ${Math.floor(quality / 10)} "${outputPath}"`;
+      command += ` -q:v ${quality} "${outputPath}"`;
     }
 
     await execPromise(command);

@@ -17,15 +17,19 @@ export default function Home() {
     formData.append('format', format);
     formData.append('quality', quality.toString());
     setLoading(true);
-    const res = await fetch('/api/optimize', {
-      method: 'POST',
-      body: formData,
-    });
+    try {
+      const res = await fetch('/api/optimize', {
+        method: 'POST',
+        body: formData,
+      });
 
-    const data = await res.json();
-    setLoading(false);
-    setOptimizedImages(data.optimized);
-    setFiles([]); // 원본 삭제
+      const data = await res.json();
+      setLoading(false);
+      setOptimizedImages(data.optimized);
+      setFiles([]); // 원본 삭제
+    } finally {
+      setLoading(false);
+    }
   };
 
   const [downloading, setDownloading] = useState(false);

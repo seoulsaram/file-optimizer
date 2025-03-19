@@ -12,11 +12,11 @@ export default function ImageUpload({
 }) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
-    if (files.length + selectedFiles.length > 10) {
+    if (selectedFiles.length > 10) {
       alert('최대 10장의 이미지만 업로드할 수 있습니다.');
       return;
     }
-    setFiles([...files, ...selectedFiles]);
+    setFiles([...selectedFiles]);
   };
 
   const handleRemove = (index: number) => {
